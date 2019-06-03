@@ -1,0 +1,155 @@
+/*Создать класс Customer, спецификация которого приведена ниже. Определить конструкторы, set- и get- методы и
+метод toString(). Создать второй класс, агрегирующий массив типа Customer, с подходящими конструкторами и
+методами. Задать критерии выбора данных и вывести эти данные на консоль.
+Класс Customer: id, фамилия, имя, отчество, адрес, номер кредитной карточки, номер банковского счета.
+Найти и вывести:
+a) список покупателей в алфавитном порядке;
+
+
+public class Customer {
+    int id;
+    String name;
+    String adress;
+    String cardN;
+    int bankConto;
+
+    public Customer(){
+        id =0;
+        name="";
+        adress="";
+        cardN="";
+        bankConto= 0;
+    }
+
+    public Customer(int id1, String name1, String adress1, String cardN1, int bankConto1){
+        id =id1;
+        name=name1;
+        adress=adress1;
+        cardN=cardN1;
+        bankConto= bankConto1;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAdress(String adress) {
+        this.adress = adress;
+    }
+
+    public void setCardN(String cardN) {
+        this.cardN = cardN;
+    }
+
+    public void setBankConto(int bankConto) {
+        this.bankConto = bankConto;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getAdress() {
+        return adress;
+    }
+
+    public String getCardN() {
+        return cardN;
+    }
+
+    public int getBankConto() {
+        return bankConto;
+    }
+
+   public String toString(){
+        String str;
+        str = Integer.toString(id);
+        str += " "+ name;
+        str += " " + adress +" ";
+        str += cardN;
+        str += " ";
+        str += Integer.toString(bankConto);
+        return str;
+    }
+}
+
+
+
+
+public class SecCust {
+    Customer[] cust = new Customer[3];
+
+    public SecCust() {
+        for (int i = 0; i < 3; i++) {
+            cust[i] = new Customer();
+        }
+
+    }
+
+    public SecCust(Customer c) {
+        for (int i = 0; i < 3; i++) {
+            cust[i] = new Customer(c.getId(), c.getName(), c.getAdress(), c.getCardN(), c.getBankConto());
+        }
+    }
+
+    public void fillCust(int i, Customer c){
+        if(i<0 || i>=3){
+            return;
+        }
+        cust[i] = new Customer(c.getId(), c.getName(), c.getAdress(), c.getCardN(), c.getBankConto());
+    }
+    public String toString(int i){
+        return cust[i].toString();
+    }
+
+    public void sortName(){
+        Customer c;
+        for (int i = cust.length - 1; i > 0; i--){
+            for (int j = i; j < cust.length; j++){
+                if ( cust[j-1].name.compareTo(cust[j].name) > 0 ) {
+                    c = cust[j-1];
+                    cust[j-1] = cust[j];
+                    cust[j] = c;
+                } else break;
+            }
+        }
+    }
+
+    public Customer getCustomer(int i){
+        if(i<0 || i>=3){
+            return null;
+        }
+        return cust[i];
+    }
+
+}
+
+
+
+public class MainCustomer {
+    public static void main(String[] args) {
+        SecCust s = new SecCust();
+        Customer c;
+        c=new Customer(12145, "Фролов Павел Григорьевич", "Минск, Киселева 15", "3535 1452 2354 1234", 4356);
+        s.fillCust(0, c);
+        c=new Customer(12876, "Иванов Василий Иванович", "Минск, Кирова 20", "1234 5678 9013 3456", 4324);
+        s.fillCust(1, c);
+        c=new Customer(19837, "Петрова Мария Осиповна", "Минск, Варвашени 44", "0987 6543 0987 1234", 1265);
+        s.fillCust(2, c);
+        s.sortName();
+        for(int i=0; i<3; i++){
+            c = s.getCustomer(i);
+            if (c.getId() >= 12200 && c.getId() <= 15000) {
+                System.out.println(c.toString());
+            }
+        }
+    }
+}
